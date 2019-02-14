@@ -11,6 +11,12 @@ import (
 // Note: It does not cache http headers. It is more efficient to set them yourself.
 func Handler(c Cache, h http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		// only cache get request
+		if req.Method == http.MethodGet {
+			h.ServeHTTP(rw, req)
+			return
+		}
+
 		url := req.URL.String()
 		r, w, err := c.Get(url)
 		if err != nil {
