@@ -12,7 +12,7 @@ import (
 func Handler(c Cache, h http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		// only cache get request
-		if req.Method == http.MethodGet {
+		if req.Method != http.MethodGet {
 			h.ServeHTTP(rw, req)
 			return
 		}
